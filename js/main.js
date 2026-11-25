@@ -9,7 +9,7 @@
   var CONFIG = {
     CONTACT_EMAIL: 'keita.linton@knorthtechnologies.ca', // business email
     PHONE: '(587) 335-5224',           // e.g. '+1 780 555 0123' (shown as typed). Empty = phone line hidden
-    BOOKING_URL: '',                   // e.g. Calendly / Microsoft Bookings URL. Empty = buttons go to the Contact page / email
+    BOOKING_URL: 'https://calendly.com/keita-linton-knorthtechnologies/free-call', // e.g. Calendly / Microsoft Bookings URL. Empty = buttons go to the Contact page / email
     LINKEDIN_URL: '',                  // company LinkedIn page URL. Empty = no LinkedIn link in the footer
     QUICK_START_PRICE: 1495,           // founding price, up to 15 staff
     INCLUDED_STAFF: 15,
