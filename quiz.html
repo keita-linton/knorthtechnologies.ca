@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="en-CA" data-tab="3">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Copilot Readiness Quiz and ROI Calculator | K North Technologies</title>
+  <meta name="description" content="Is your business ready for Microsoft Copilot? Take the free 2-minute readiness quiz, then estimate the time and money Copilot could save your team.">
+  <meta name="author" content="K North Technologies Inc.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#0a1628">
+  <link rel="canonical" href="https://knorthtechnologies.ca/quiz.html">
+
+  <!-- Open Graph / social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="K North Technologies">
+  <meta property="og:locale" content="en_CA">
+  <meta property="og:url" content="https://knorthtechnologies.ca/quiz.html">
+  <meta property="og:title" content="Copilot Readiness Quiz and ROI Calculator | K North Technologies">
+  <meta property="og:description" content="Is your business ready for Microsoft Copilot? Take the free 2-minute readiness quiz, then estimate the time and money Copilot could save your team.">
+  <meta property="og:image" content="https://knorthtechnologies.ca/assets/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="K North Technologies: Microsoft 365 + Copilot Quick Start">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Copilot Readiness Quiz and ROI Calculator | K North Technologies">
+  <meta name="twitter:description" content="Is your business ready for Microsoft Copilot? Take the free 2-minute readiness quiz, then estimate the time and money Copilot could save your team.">
+  <meta name="twitter:image" content="https://knorthtechnologies.ca/assets/og-image.png">
+
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="stylesheet" href="css/styles.css">
+  <script>(function(d){d.classList.add('js');var t=+d.getAttribute('data-tab'),f=null;try{f=sessionStorage.getItem('kn-from');}catch(e){}var dir=(f===null||+f===t)?'':(t>+f?'fwd':'back');var cap='PageRevealEvent' in window;function enter(){d.classList.add('page-enter');if(dir)d.classList.add('enter-'+dir);}if(!cap){d.classList.add('no-vt');enter();}else addEventListener('pagereveal',function(e){var v=e.viewTransition;if(!v){enter();return;}if(dir&&v.types)v.types.add(dir);var q=function(){};if(v.ready)v.ready.catch(q);if(v.finished)v.finished.catch(q);});})(document.documentElement);</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="index.html" aria-label="K North Technologies home">
+        <picture class="brand-logo"><source media="(max-width: 420px)" srcset="assets/logo-mark.png"><img src="assets/logo.png" alt="K North Technologies" width="107" height="44" decoding="async"></picture>
+      </a>
+
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+        <span class="nav-toggle-bars" aria-hidden="true"><span></span><span></span><span></span></span>
+        <span class="sr-only">Menu</span>
+      </button>
+
+      <nav class="site-nav" id="site-nav" aria-label="Main">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="ai.html">AI</a></li>
+          <li><a href="quiz.html" class="active" aria-current="page">Quiz &amp; ROI<span class="tab-line" aria-hidden="true"></span></a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li class="nav-cta-item"><a class="btn btn-primary btn-sm js-booking" href="contact.html#contact">Book a free call</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- PAGE HERO -->
+    <section class="page-hero" aria-labelledby="page-title">
+      <div class="hero-bg" aria-hidden="true"><div class="grid-lines"></div><div class="grid-lines grid-lines-hi"></div><div class="hero-spot"></div><div class="orb orb-1"></div><div class="orb orb-2"></div></div>
+      <div class="container">
+        <p class="eyebrow reveal"><span class="dot" aria-hidden="true"></span> Free tools</p>
+        <h1 id="page-title" class="reveal">Check your readiness. <span class="grad">See the payoff.</span></h1>
+        <p class="lead reveal">Take the 2-minute Copilot readiness quiz, then work out what the time saved is worth. Everything runs in your browser.</p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="quiz" aria-labelledby="quiz-title">
+      <div class="container narrow">
+        <div class="section-head reveal">
+          <p class="kicker">Copilot readiness quiz</p>
+          <h2 id="quiz-title">Is your business ready for Copilot?</h2>
+          <p class="section-lead">Seven quick questions. You get a score out of 100 and a clear next step. Nothing is sent anywhere.</p>
+        </div>
+
+        <div class="quiz panel reveal" id="quiz-app">
+          <div class="quiz-progress" aria-hidden="true"><span class="quiz-progress-bar" id="quiz-bar"></span></div>
+          <p class="quiz-count" id="quiz-count" aria-live="polite">Question 1 of 7</p>
+          <form id="quiz-form" novalidate>
+            <div id="quiz-questions"></div>
+            <div class="quiz-nav">
+              <button type="button" class="btn btn-ghost" id="quiz-back" disabled>Back</button>
+              <button type="button" class="btn btn-primary" id="quiz-next" disabled>Next</button>
+            </div>
+          </form>
+          <div class="quiz-result" id="quiz-result" hidden tabindex="-1">
+            <div class="result-top">
+              <div class="result-ring">
+                <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+                  <circle cx="60" cy="60" r="50" class="ring-bg"/>
+                  <circle cx="60" cy="60" r="50" class="ring-fg" id="result-ring" pathLength="100"/>
+                </svg>
+                <p class="result-score"><strong id="result-score">0</strong><span>out of 100</span></p>
+              </div>
+              <div>
+                <p class="kicker" id="result-level">Your result</p>
+                <h3 id="result-title">Result</h3>
+                <p id="result-text"></p>
+              </div>
+            </div>
+            <div class="result-actions-list">
+              <h4>Your top next steps</h4>
+              <ul id="result-steps" class="ticks"></ul>
+            </div>
+            <div class="hero-actions">
+              <a class="btn btn-primary js-booking" href="contact.html#contact">Book a free 15-min call</a>
+              <button type="button" class="btn btn-ghost" id="quiz-restart">Retake the quiz</button>
+            </div>
+          </div>
+          <noscript><p>The quiz needs JavaScript. You can still <a href="contact.html">contact us</a> for a free readiness chat.</p></noscript>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roi" aria-labelledby="roi-title">
+      <div class="container">
+        <div class="section-head reveal">
+          <p class="kicker">ROI and time-saved calculator</p>
+          <h2 id="roi-title">What is an hour a week worth to your team?</h2>
+          <p class="section-lead">Move the sliders to match your business. The numbers update as you go.</p>
+        </div>
+
+        <div class="roi panel reveal">
+          <form class="roi-inputs" id="roi-form" onsubmit="return false">
+            <div class="field">
+              <label for="roi-staff">Staff using Microsoft 365</label>
+              <div class="range-row">
+                <input type="range" id="roi-staff" min="1" max="50" step="1" value="10" aria-describedby="roi-staff-out">
+                <output id="roi-staff-out" for="roi-staff">10 people</output>
+              </div>
+            </div>
+            <div class="field">
+              <label for="roi-hours">Hours saved per person each week</label>
+              <div class="range-row">
+                <input type="range" id="roi-hours" min="0.5" max="6" step="0.5" value="2" aria-describedby="roi-hours-out">
+                <output id="roi-hours-out" for="roi-hours">2 hours</output>
+              </div>
+              <p class="hint">Drafting emails, meeting notes, summaries and first drafts of documents.</p>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label for="roi-rate">Average hourly cost per person (CAD)</label>
+                <input type="number" id="roi-rate" min="15" max="250" step="1" value="35" inputmode="decimal">
+              </div>
+              <div class="field">
+                <label for="roi-licence">Copilot licence per user per month (CAD)</label>
+                <input type="number" id="roi-licence" min="0" max="100" step="0.5" value="28.5" inputmode="decimal">
+              </div>
+            </div>
+            <p class="hint">Use 0 for the licence if you already pay for Copilot. Licence prices are set by Microsoft and change over time.</p>
+          </form>
+
+          <div class="roi-results" aria-live="polite">
+            <div class="stat">
+              <span class="stat-label">Hours saved per month</span>
+              <span class="stat-value" id="roi-hours-month">0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Value of time saved per year</span>
+              <span class="stat-value" id="roi-value-year">$0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Net yearly value after licences</span>
+              <span class="stat-value accent" id="roi-net-year">$0</span>
+            </div>
+            <div class="stat">
+              <span class="stat-label">Quick Start pays for itself in</span>
+              <span class="stat-value" id="roi-payback">0 weeks</span>
+              <span class="stat-sub" id="roi-cost">Founding price $1,495</span>
+            </div>
+            <p class="disclaimer">Estimates only, based on 46 working weeks a year. Real results depend on your team, your work and how Copilot is used.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEXT PAGE -->
+    <section class="page-next" aria-label="Keep exploring">
+      <div class="container page-next-inner reveal">
+        <div>
+          <p class="kicker">Up next</p>
+          <a class="page-next-link" href="about.html">About the founder
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <p class="hint">Who you will be working with.</p>
+        </div>
+        <a class="btn btn-primary js-booking" href="contact.html#contact">Book a free 15-min call</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/logo.png" alt="K North Technologies" width="107" height="44" loading="lazy" decoding="async">
+        <p>Microsoft 365 + Copilot Quick Start and AI automation for small businesses. Edmonton, Alberta.</p>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <ul>
+          <li><a href="services.html">Services and pricing</a></li>
+          <li><a href="ai.html">AI services and AI Lab</a></li>
+          <li><a href="quiz.html">Readiness quiz</a></li>
+          <li><a href="quiz.html#roi">ROI calculator</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="privacy.html">Privacy policy</a></li>
+          <li><a href="terms.html">Terms of service</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="container footer-legal">
+      <p>&copy; <span id="year">2026</span> K North Technologies Inc. All rights reserved.</p>
+      <p>Microsoft, Microsoft 365 and Copilot are trademarks of the Microsoft group of companies. K North Technologies is independent and not affiliated with Microsoft.</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+</body>
+</html>
