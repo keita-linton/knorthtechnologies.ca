@@ -25,10 +25,14 @@
   /* ---------- Placeholders → real links once CONFIG is filled ---------- */
   function applyConfig() {
     if (isSet(CONFIG.BOOKING_URL)) {
+      /* Booking happens on this site: the Calendly calendar is embedded
+         on contact.html#book, so no visitor is sent to calendly.com. */
+      var here = (location.pathname.split('/').pop() || 'index.html');
+      var bookHref = here === 'contact.html' ? '#book' : 'contact.html#book';
       $$('.js-booking').forEach(function (a) {
-        a.href = CONFIG.BOOKING_URL;
-        a.target = '_blank';
-        a.rel = 'noopener';
+        a.href = bookHref;
+        a.removeAttribute('target');
+        a.removeAttribute('rel');
         if (a.dataset.bookingText) a.textContent = a.dataset.bookingText;
       });
     }
