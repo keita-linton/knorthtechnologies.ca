@@ -2,6 +2,21 @@
 (function () {
   'use strict';
 
+  /* ---------- Google Analytics 4: traffic measurement ---------- */
+  (function () {
+    var GA_ID = 'G-V290LH0FYP';
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', GA_ID);
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+    document.head.appendChild(s);
+  })();
+
+
   /* ============================================================
      SITE SETTINGS: replace these placeholders before going live.
      Leave a value empty ('') to hide it.
