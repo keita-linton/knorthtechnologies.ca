@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>K North Technologies — Website Traffic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a1628; --bg-soft: #0d1d36; --surface: #101f38; --surface-2: #152a4a;
+    --ink: #e8eef7; --ink-soft: #c3d0e4; --muted: #8fa3bd;
+    --line: #1e3255; --line-strong: #2a4066;
+    --blue: #4da3ff; --blue-soft: #173a63; --blue-deep: #2b7de0;
+    --green: #4ade9b; --green-soft: #0f2f22;
+    --amber: #ffd166; --amber-soft: #3a2f10;
+    --red: #f87171;
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --shadow-lg: 0 22px 55px rgba(0,0,0,.45);
+    --radius: 18px;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif; background: var(--bg); color: var(--ink); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 30px 20px 60px; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+  /* ---------- Header ---------- */
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; margin-bottom: 22px; }
+  .brand h1 { font-size: 32px; font-weight: 800; line-height: 1.05; margin: 0; letter-spacing: -.02em; }
+  .brand h1 span { color: var(--blue); }
+  .brand p { margin: 8px 0 0; color: var(--muted); font-size: 14.5px; }
+  .live-pill { display: inline-flex; align-items: center; gap: 9px; background: var(--surface); border: 1px solid var(--line-strong); border-radius: 999px; padding: 9px 15px; box-shadow: var(--shadow); font-weight: 700; font-size: 14px; }
+  .live-pill .txt small { display: block; font-weight: 500; color: var(--muted); font-size: 11.5px; line-height: 1.2; }
+
+  /* Pulsing green dot — the connection beam */
+  .pulse-dot { position: relative; width: 12px; height: 12px; border-radius: 50%; background: var(--green); flex: none; box-shadow: 0 0 10px rgba(74,222,155,.8); }
+  .pulse-dot::before, .pulse-dot::after { content: ""; position: absolute; inset: -6px; border-radius: 50%; border: 2px solid var(--green); opacity: 0; animation: ping 2.2s cubic-bezier(0,0,.2,1) infinite; }
+  .pulse-dot::after { animation-delay: 1.1s; }
+  @keyframes ping { 0% { transform: scale(.45); opacity: .9; } 70% { transform: scale(1.5); opacity: 0; } 100% { transform: scale(1.5); opacity: 0; } }
+  .pulse-dot.off { background: var(--amber); box-shadow: 0 0 10px rgba(255,209,102,.7); }
+  .pulse-dot.off::before, .pulse-dot.off::after { border-color: var(--amber); animation-duration: 1.4s; }
+
+  /* ---------- Cards ---------- */
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; margin-bottom: 18px; }
+  .card h2 { font-size: 19px; font-weight: 700; margin: 0 0 4px; letter-spacing: -.01em; }
+  .card .hint { color: var(--muted); font-size: 13.5px; margin: 0 0 14px; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 18px; }
+  .kpi { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 20px 18px 16px; position: relative; overflow: hidden; }
+  .kpi::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--blue); }
+  .kpi.green::before { background: var(--green); }
+  .kpi.amber::before { background: var(--amber); }
+  .kpi.violet::before { background: #a78bfa; }
+  .kpi .num { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 38px; font-weight: 600; line-height: 1; font-variant-numeric: tabular-nums; }
+  .kpi .lbl { font-size: 13.5px; font-weight: 600; color: var(--ink-soft); margin-top: 8px; }
+  .kpi .sub { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  .kpi .trend { font-size: 12.5px; font-weight: 700; margin-top: 6px; }
+  .trend.up { color: var(--green); } .trend.down { color: var(--red); } .trend.flat { color: var(--muted); }
+
+  /* ---------- Globe ---------- */
+  .globe-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 20px; align-items: start; }
+  .globe-wrap { position: relative; background: radial-gradient(120% 120% at 50% 0%, #152c52 0%, #0d1d36 55%, #081222 100%); border-radius: 14px; overflow: hidden; border: 1px solid var(--line); }
+  .globe-wrap canvas { display: block; width: 100%; height: auto; }
+  .globe-tag { position: absolute; left: 14px; top: 12px; color: #dbe7f5; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; background: rgba(8,18,34,.55); border: 1px solid rgba(219,231,245,.22); padding: 6px 10px; border-radius: 999px; backdrop-filter: blur(4px); }
+  .globe-tag .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--green); margin-right: 6px; box-shadow: 0 0 8px var(--green); animation: glow 2.2s ease-in-out infinite; }
+  @keyframes glow { 0%,100% { opacity: 1; } 50% { opacity: .45; } }
+  .live-list { list-style: none; margin: 0; padding: 0; }
+  .live-list li { display: flex; align-items: center; gap: 10px; padding: 10px 2px; border-bottom: 1px solid var(--line); font-size: 14.5px; }
+  .live-list li:last-child { border-bottom: 0; }
+  .live-list .mdot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); flex: none; box-shadow: 0 0 0 4px var(--green-soft); animation: glow 2.2s ease-in-out infinite; }
+  .live-list .where { font-weight: 600; }
+  .live-list .page { color: var(--muted); font-size: 13px; margin-left: auto; text-align: right; }
+  .empty { color: var(--muted); font-size: 14px; }
+
+  /* ---------- Chart ---------- */
+  .chart-wrap { position: relative; }
+  .chart-wrap canvas { display: block; width: 100%; height: 190px; }
+  .chart-foot { display: flex; justify-content: space-between; color: var(--muted); font-size: 12.5px; margin-top: 6px; }
+
+  /* ---------- Tables that read like charts ---------- */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+  td, th { padding: 9px 4px; text-align: left; vertical-align: middle; }
+  td:last-child, th:last-child { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; }
+  tbody tr { border-top: 1px solid var(--line); }
+  .bar-row { position: relative; }
+  .bar-row .fill { position: absolute; left: 0; top: 6px; bottom: 6px; border-radius: 8px; background: var(--blue-soft); z-index: 0; }
+  .bar-row.blue .fill { background: var(--blue-soft); }
+  .bar-row.amber .fill { background: var(--amber-soft); }
+  .bar-row td { position: relative; z-index: 1; }
+  .bar-row td:first-child { font-weight: 600; }
+  .pill { display: inline-block; font-size: 11.5px; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); }
+  .pill.green { background: var(--green-soft); color: var(--green); }
+
+  /* Devices segmented bar */
+  .seg { display: flex; height: 12px; border-radius: 999px; overflow: hidden; background: var(--bg-soft); margin: 12px 0 10px; }
+  .seg span { display: block; height: 100%; }
+  .legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 13.5px; color: var(--ink-soft); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; }
+
+  /* Recent feed */
+  ul.clean { list-style: none; margin: 0; padding: 0; font-size: 14.5px; }
+  ul.clean li { padding: 9px 0; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+  ul.clean li:last-child { border-bottom: 0; }
+  ul.clean li span:last-child { color: var(--muted); font-size: 13px; white-space: nowrap; }
+  .muted { color: var(--muted); font-size: 13.5px; }
+
+  /* ---------- Key gate ---------- */
+  .lock-wrap { max-width: 520px; margin: 60px auto 0; }
+  .lock-card { background: var(--surface); border: 1px solid var(--line-strong); border-radius: 22px; box-shadow: var(--shadow-lg); padding: 34px 30px; text-align: center; }
+  .lock-card h2 { font-size: 24px; margin: 0 0 8px; letter-spacing: -.01em; }
+  .lock-card p { color: var(--muted); margin: 0 0 20px; font-size: 14.5px; }
+  .lock-mark { width: 60px; height: 60px; border-radius: 16px; background: var(--blue-soft); color: var(--blue); display: inline-flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 14px; font-weight: 800; }
+  input[type="text"], input[type="password"] { width: 100%; padding: 13px 14px; font-size: 15px; border: 1.5px solid var(--line-strong); border-radius: 12px; margin: 6px 0 12px; background: var(--bg-soft); color: var(--ink); font-family: "JetBrains Mono", ui-monospace, monospace; text-align: center; }
+  input:focus { outline: 3px solid var(--blue-soft); border-color: var(--blue); }
+  label.lbl { display: block; text-align: left; font-size: 13px; font-weight: 600; color: var(--ink-soft); }
+  button { background: var(--blue-deep); color: #fff; border: 0; border-radius: 12px; padding: 14px 20px; font-size: 15px; font-weight: 700; cursor: pointer; width: 100%; font-family: inherit; }
+  button:hover { background: var(--blue); }
+  button:disabled { opacity: .55; cursor: default; }
+  .err { color: var(--red); font-size: 13.5px; margin-top: 8px; min-height: 18px; }
+  .hidden { display: none !important; }
+  .foot { text-align: center; color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .refresh { font-size: 13px; color: var(--muted); text-align: center; margin-top: 6px; }
+  /* Live visitor toast — the "ping" when someone lands on the site */
+  .toast-wrap { position: fixed; right: 18px; bottom: 18px; display: flex; flex-direction: column; gap: 10px; z-index: 50; max-width: min(360px, calc(100vw - 36px)); }
+  .toast { background: var(--surface); border: 1px solid var(--line-strong); border-left: 4px solid var(--green); border-radius: 14px; box-shadow: var(--shadow-lg); padding: 13px 15px; display: flex; gap: 10px; align-items: flex-start; animation: toastIn .35s ease both; }
+  .toast.out { animation: toastOut .4s ease both; }
+  @keyframes toastIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+  @keyframes toastOut { to { opacity: 0; transform: translateY(8px); } }
+  .toast .tdot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex: none; margin-top: 5px; box-shadow: 0 0 0 4px var(--green-soft); }
+  .toast b { display: block; font-size: 14px; }
+  .toast span { font-size: 13px; color: var(--muted); }
+  @media (max-width: 760px) {
+    .kpis { grid-template-columns: repeat(2, 1fr); }
+    .globe-grid, .split { grid-template-columns: 1fr; }
+    .brand h1 { font-size: 26px; }
+    .kpi .num { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- Key gate (Keita only) -->
+  <div id="lock" class="lock-wrap">
+    <div class="lock-card">
+      <div class="lock-mark">K</div>
+      <h2>K North Traffic</h2>
+      <p>Private dashboard for knorthtechnologies.ca. Enter your dashboard key once — this device will remember it.</p>
+      <label class="lbl" for="key">Dashboard read key</label>
+      <input id="key" type="password" placeholder="••••••••••••••••" autocomplete="off">
+      <button id="unlockBtn" onclick="unlock()">Unlock dashboard</button>
+      <div id="keyErr" class="err"></div>
+      <p style="margin:18px 0 0;font-size:12.5px;color:var(--muted);">The key is the shared traffic collector's read key. It is stored only in this browser.</p>
+    </div>
+  </div>
+
+  <!-- Dashboard -->
+  <div id="dash" class="hidden">
+    <header>
+      <div class="brand">
+        <h1>K North <span>Technologies</span></h1>
+        <p>knorthtechnologies.ca &middot; live website traffic</p>
+      </div>
+      <div class="live-pill" id="livePill">
+        <span class="pulse-dot" id="pulseDot"></span>
+        <span class="txt"><span id="liveState">Live</span><small id="liveSub">connected &middot; updating every 30s</small></span>
+      </div>
+    </header>
+
+    <div class="kpis">
+      <div class="kpi green"><div class="num" id="onlineNow">&ndash;</div><div class="lbl">Online now</div><div class="sub" id="onlineSub">people on the site</div></div>
+      <div class="kpi"><div class="num" id="total24">&ndash;</div><div class="lbl">Visits &middot; last 24h</div><div class="sub">all visitors, incl. AI</div><div class="trend flat" id="trend24"></div></div>
+      <div class="kpi amber"><div class="num" id="bots24">&ndash;</div><div class="lbl">AI &amp; bot visits &middot; 24h</div><div class="sub" id="botsSub">crawlers &amp; AI tools</div></div>
+      <div class="kpi violet"><div class="num" id="topPageCount">&ndash;</div><div class="lbl" id="topPageName">Top page</div><div class="sub">last 24 hours</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Live visitor map</h2>
+      <p class="hint">Each glowing dot is someone on your site right now. The globe turns slowly — dots pulse as visitors arrive.</p>
+      <div class="globe-grid">
+        <div class="globe-wrap">
+          <canvas id="globe" width="640" height="420"></canvas>
+          <span class="globe-tag"><span class="dot"></span><span id="globeCount">0 live</span></span>
+        </div>
+        <div>
+          <h3 style="font-size:16px;margin:2px 0 6px;">Live right now</h3>
+          <ul class="live-list" id="liveList"><li><span class="empty">No one on the site at this moment.</span></li></ul>
+          <h3 style="font-size:16px;margin:18px 0 6px;">Places visiting today</h3>
+          <ul class="live-list" id="whereList"><li><span class="empty">No visits yet today.</span></li></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Visits &middot; last 24 hours</h2>
+      <p class="hint">Each bar is one hour. The amber bar is your busiest hour.</p>
+      <div class="chart-wrap"><canvas id="chart" width="960" height="190"></canvas></div>
+      <div class="chart-foot"><span id="chartStart">24 hours ago</span><span id="chartPeak"></span><span>now</span></div>
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <h2>Top pages</h2>
+        <p class="hint">What people are reading.</p>
+        <table><thead><tr><th>Page</th><th>Visits</th></tr></thead><tbody id="pagesBody"><tr><td colspan="2" class="muted">Loading&hellip;</td></tr></tbody></table>
+      </div>
+      <div class="card">
+        <h2>Sources</h2>
+        <p class="hint">How people find you.</p>
+        <table><thead><tr><th>Source</th><th>Visits</th></tr></thead><tbody id="srcBody"><tr><td colspan="2" class="muted">Loading&hellip;</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="card">
+        <h2>Devices</h2>
+        <p class="hint">Phone, tablet or computer.</p>
+        <div class="seg" id="devSeg"><span style="width:100%;background:var(--blue-soft);"></span></div>
+        <div class="legend" id="devLegend"></div>
+      </div>
+      <div class="card">
+        <h2>AI visitors</h2>
+        <p class="hint">Search engines &amp; AI tools reading your pages.</p>
+        <table><thead><tr><th>Visitor</th><th>Visits</th></tr></thead><tbody id="botBody"><tr><td colspan="2" class="muted">Loading&hellip;</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>Recent visitors</h2>
+      <p class="hint">Latest arrivals, newest first. No visitor is ever identified — page and time only.</p>
+      <ul class="clean" id="recentList"><li><span class="muted">Loading&hellip;</span></li></ul>
+    </div>
+    <p class="refresh" id="refreshNote">Updates every 30 seconds.</p>
+    <p class="foot">Private by design: no cookies, no visitor names, no addresses — only the page, the time and a rough region.</p>
+  </div>
+</div>
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+var API = "https://abundant-traffic.fly.dev"; /* shared collector (free) — Knorth data is ?site=knorth */
+var readKey = localStorage.getItem("kn_read_key") || "";
+var timer = null;
+var lastData = null;
+var connected = false;
+
+function show(el, on) { document.getElementById(el).classList.toggle("hidden", !on); }
+function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (m) { return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]; }); }
+function fmtTime(ts) { var d = new Date(ts * 1000); return d.toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }); }
+function topRows(obj, n) { return Object.entries(obj || {}).sort(function (a, b) { return b[1] - a[1]; }).slice(0, n); }
+function prettyPage(p) {
+  if (!p || p === "/") return "Home page";
+  var s = String(p).replace(/^\/|\/$/g, "").replace(/-/g, " ");
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function prettySource(s) {
+  var m = { direct: "Direct", google: "Google", bing: "Bing", facebook: "Facebook", instagram: "Instagram", linkedin: "LinkedIn", site: "From your own site", other: "Other websites", "server-log": "Search engines" };
+  return m[s] || (s ? s.charAt(0).toUpperCase() + s.slice(1) : "Direct");
+}
+function prettyWhere(tz) {
+  if (!tz) return "Somewhere nearby";
+  var m = TZ_CITY[tz];
+  if (m) return m[2];
+  var parts = tz.split("/");
+  var city = (parts[1] || parts[0] || tz).replace(/_/g, " ");
+  return city.charAt(0).toUpperCase() + city.slice(1);
+}
+
+/* ---------- Live visitor toast (the "ping") ---------- */
+var prevOnlineKeys = null;
+function onlineKey(e) { return (e.page || "/") + "|" + (e.device || "") + "|" + (e.where || ""); }
+function showToast(title, sub) {
+  var wrap = document.getElementById("toastWrap");
+  if (!wrap) return;
+  var t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = "<span class='tdot'></span><div><b>" + esc(title) + "</b><span>" + esc(sub) + "</span></div>";
+  wrap.appendChild(t);
+  setTimeout(function () { t.classList.add("out"); setTimeout(function () { t.remove(); }, 420); }, 6000);
+}
+function pingNewVisitors(online) {
+  var human = online.filter(function (e) { return e.kind !== "bot"; });
+  var curKeys = human.map(onlineKey);
+  if (prevOnlineKeys) {
+    human.forEach(function (e) {
+      if (prevOnlineKeys.indexOf(onlineKey(e)) === -1) {
+        showToast("New visitor — " + prettyWhere(e.where || ""), prettyPage(e.page || "/") + " · just now");
+      }
+    });
+  }
+  prevOnlineKeys = curKeys;
+}
+
+/* ---------- Timezone -> approximate place (city, lat, lng) ---------- */
+var TZ_CITY = {
+  "America/Edmonton": [53.54, -113.49, "Edmonton, Canada"],
+  "America/Vancouver": [49.28, -123.12, "Vancouver, Canada"],
+  "America/Toronto": [43.65, -79.38, "Toronto, Canada"],
+  "America/Montreal": [45.50, -73.57, "Montréal, Canada"],
+  "America/Winnipeg": [49.90, -97.14, "Winnipeg, Canada"],
+  "America/Calgary": [51.05, -114.07, "Calgary, Canada"],
+  "America/Saskatoon": [52.13, -106.67, "Saskatoon, Canada"],
+  "America/Regina": [50.45, -104.62, "Regina, Canada"],
+  "America/Halifax": [44.65, -63.57, "Halifax, Canada"],
+  "America/St_Johns": [47.56, -52.71, "St. John's, Canada"],
+  "America/New_York": [40.71, -74.01, "New York, USA"],
+  "America/Chicago": [41.88, -87.63, "Chicago, USA"],
+  "America/Denver": [39.74, -104.99, "Denver, USA"],
+  "America/Los_Angeles": [34.05, -118.24, "Los Angeles, USA"],
+  "America/Phoenix": [33.45, -112.07, "Phoenix, USA"],
+  "America/Anchorage": [61.22, -149.90, "Anchorage, USA"],
+  "America/Mexico_City": [19.43, -99.13, "Mexico City, Mexico"],
+  "America/Sao_Paulo": [-23.55, -46.63, "São Paulo, Brazil"],
+  "America/Bogota": [4.71, -74.07, "Bogotá, Colombia"],
+  "America/Lima": [-12.05, -77.04, "Lima, Peru"],
+  "America/Santiago": [-33.45, -70.67, "Santiago, Chile"],
+  "America/Argentina/Buenos_Aires": [-34.60, -58.38, "Buenos Aires, Argentina"],
+  "Europe/London": [51.51, -0.13, "London, UK"],
+  "Europe/Dublin": [53.35, -6.26, "Dublin, Ireland"],
+  "Europe/Paris": [48.85, 2.35, "Paris, France"],
+  "Europe/Berlin": [52.52, 13.41, "Berlin, Germany"],
+  "Europe/Madrid": [40.42, -3.70, "Madrid, Spain"],
+  "Europe/Rome": [41.90, 12.50, "Rome, Italy"],
+  "Europe/Amsterdam": [52.37, 4.90, "Amsterdam, Netherlands"],
+  "Europe/Brussels": [50.85, 4.35, "Brussels, Belgium"],
+  "Europe/Zurich": [47.38, 8.54, "Zurich, Switzerland"],
+  "Europe/Vienna": [48.21, 16.37, "Vienna, Austria"],
+  "Europe/Stockholm": [59.33, 18.07, "Stockholm, Sweden"],
+  "Europe/Oslo": [59.91, 10.75, "Oslo, Norway"],
+  "Europe/Copenhagen": [55.68, 12.57, "Copenhagen, Denmark"],
+  "Europe/Helsinki": [60.17, 24.94, "Helsinki, Finland"],
+  "Europe/Athens": [37.98, 23.73, "Athens, Greece"],
+  "Europe/Warsaw": [52.23, 21.01, "Warsaw, Poland"],
+  "Europe/Lisbon": [38.72, -9.14, "Lisbon, Portugal"],
+  "Europe/Moscow": [55.76, 37.62, "Moscow, Russia"],
+  "Europe/Istanbul": [41.01, 28.98, "Istanbul, Türkiye"],
+  "Europe/Kyiv": [50.45, 30.52, "Kyiv, Ukraine"],
+  "Africa/Cairo": [30.04, 31.24, "Cairo, Egypt"],
+  "Africa/Lagos": [6.52, 3.38, "Lagos, Nigeria"],
+  "Africa/Johannesburg": [-26.20, 28.05, "Johannesburg, South Africa"],
+  "Africa/Nairobi": [-1.29, 36.82, "Nairobi, Kenya"],
+  "Africa/Casablanca": [33.57, -7.59, "Casablanca, Morocco"],
+  "Asia/Dubai": [25.20, 55.27, "Dubai, UAE"],
+  "Asia/Jerusalem": [31.77, 35.21, "Jerusalem, Israel"],
+  "Asia/Kolkata": [19.08, 72.88, "Mumbai, India"],
+  "Asia/Karachi": [24.86, 67.01, "Karachi, Pakistan"],
+  "Asia/Dhaka": [23.81, 90.41, "Dhaka, Bangladesh"],
+  "Asia/Bangkok": [13.76, 100.50, "Bangkok, Thailand"],
+  "Asia/Singapore": [1.35, 103.82, "Singapore"],
+  "Asia/Kuala_Lumpur": [3.14, 101.69, "Kuala Lumpur, Malaysia"],
+  "Asia/Jakarta": [-6.21, 106.85, "Jakarta, Indonesia"],
+  "Asia/Manila": [14.60, 120.98, "Manila, Philippines"],
+  "Asia/Hong_Kong": [22.32, 114.17, "Hong Kong"],
+  "Asia/Shanghai": [31.23, 121.47, "Shanghai, China"],
+  "Asia/Tokyo": [35.68, 139.69, "Tokyo, Japan"],
+  "Asia/Seoul": [37.57, 126.98, "Seoul, South Korea"],
+  "Asia/Taipei": [25.03, 121.57, "Taipei, Taiwan"],
+  "Australia/Sydney": [-33.87, 151.21, "Sydney, Australia"],
+  "Australia/Melbourne": [-37.81, 144.96, "Melbourne, Australia"],
+  "Australia/Brisbane": [-27.47, 153.03, "Brisbane, Australia"],
+  "Australia/Perth": [-31.95, 115.86, "Perth, Australia"],
+  "Pacific/Auckland": [-36.85, 174.76, "Auckland, New Zealand"],
+  "Pacific/Honolulu": [21.31, -157.86, "Honolulu, USA"],
+  "Atlantic/Reykjavik": [64.15, -21.94, "Reykjavik, Iceland"]
+};
+function tzLatLng(tz) {
+  var m = TZ_CITY[tz];
+  if (m) return [m[0], m[1]];
+  return null;
+}
+
+/* ---------- Key gate ---------- */
+async function unlock() {
+  var k = document.getElementById("key").value.trim();
+  var err = document.getElementById("keyErr");
+  var btn = document.getElementById("unlockBtn");
+  if (!k) { err.textContent = "Enter your dashboard key."; return; }
+  btn.disabled = true;
+  err.textContent = "";
+  try {
+    var r = await fetch(API + "/live?key=" + encodeURIComponent(k) + "&site=knorth");
+    var j = await r.json();
+    if (j.error) {
+      err.textContent = "That key is not right. Check it and try again.";
+      btn.disabled = false;
+      return;
+    }
+    readKey = k;
+    localStorage.setItem("kn_read_key", k);
+    show("lock", false);
+    show("dash", true);
+    renderLive(j);
+    timer = setInterval(loadLive, 30000);
+    requestAnimationFrame(drawGlobe);
+  } catch (e) {
+    err.textContent = "Could not reach the traffic server. The collector may not be deployed yet — check that knorth-traffic is live on Fly.io, then try again.";
+    btn.disabled = false;
+  }
+}
+
+function setConn(on) {
+  connected = on;
+  var dot = document.getElementById("pulseDot");
+  var state = document.getElementById("liveState");
+  var sub = document.getElementById("liveSub");
+  if (!dot) return;
+  if (on) {
+    dot.classList.remove("off");
+    state.textContent = "Live";
+    sub.textContent = "connected · updating every 30s";
+  } else {
+    dot.classList.add("off");
+    state.textContent = "Reconnecting";
+    sub.textContent = "connection lost — trying again";
+  }
+}
+
+/* ---------- Globe ---------- */
+var globe = { rot: 0.6, dots: [] };
+var CITY_DOTS = [
+  [51.5, -0.13], [40.7, -74.0], [34.0, -118.2], [41.9, -87.6], [48.9, 2.35], [52.5, 13.4],
+  [55.8, 37.6], [19.1, 72.9], [31.2, 121.5], [35.7, 139.7], [22.3, 114.2], [1.35, 103.8],
+  [-23.5, -46.6], [-33.9, 18.4], [30.0, 31.2], [25.2, 55.3], [-33.9, 151.2], [43.7, -79.4],
+  [49.3, -123.1], [53.5, -113.5], [37.6, 127.0], [13.8, 100.5], [6.5, 3.4], [-1.3, 36.8],
+  [41.0, 29.0], [52.2, 21.0], [59.3, 18.1], [60.2, 24.9], [-34.6, -58.4], [47.4, 8.5]
+];
+function project(lat, lon, R, cx, cy) {
+  var la = lat * Math.PI / 180, lo = (lon + globe.rot * 180 / Math.PI) * Math.PI / 180;
+  var x = Math.cos(la) * Math.sin(lo), y = Math.sin(la), z = Math.cos(la) * Math.cos(lo);
+  return { x: cx + x * R, y: cy - y * R, z: z };
+}
+function drawGlobe() {
+  var cv = document.getElementById("globe");
+  if (!cv || document.getElementById("dash").classList.contains("hidden")) return;
+  var ctx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  ctx.clearRect(0, 0, W, H);
+  var cx = W / 2, cy = H / 2 + 6, R = Math.min(W, H) / 2 - 14;
+  var g = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.1, cx, cy, R);
+  g.addColorStop(0, "#1d3a66"); g.addColorStop(0.55, "#122a4a"); g.addColorStop(1, "#0a1826");
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fillStyle = g; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.strokeStyle = "rgba(120,170,255,.35)"; ctx.lineWidth = 1.2; ctx.stroke();
+  ctx.strokeStyle = "rgba(120,170,255,.16)"; ctx.lineWidth = 1;
+  var la, lo, p;
+  for (la = -60; la <= 60; la += 30) {
+    ctx.beginPath();
+    for (lo = -180; lo <= 180; lo += 6) {
+      p = project(la, lo, R, cx, cy);
+      if (p.z < -0.02) continue;
+      if (lo === -180) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+  for (lo = -180; lo < 180; lo += 30) {
+    ctx.beginPath();
+    for (la = -80; la <= 80; la += 4) {
+      p = project(la, lo, R, cx, cy);
+      if (p.z < -0.02) continue;
+      if (la === -80) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+    }
+    ctx.stroke();
+  }
+  ctx.fillStyle = "rgba(160,200,255,.35)";
+  CITY_DOTS.forEach(function (c) {
+    var q = project(c[0], c[1], R, cx, cy);
+    if (q.z > 0.05) { ctx.beginPath(); ctx.arc(q.x, q.y, 1.4, 0, Math.PI * 2); ctx.fill(); }
+  });
+  var now = Date.now();
+  globe.dots.forEach(function (d) {
+    var q = project(d.lat, d.lng, R, cx, cy);
+    if (q.z <= 0.02) return;
+    var phase = ((now / 1100) + d.phase) % 1;
+    var rr = 5 + phase * 16;
+    ctx.beginPath(); ctx.arc(q.x, q.y, rr, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(74,222,155," + (0.55 * (1 - phase)) + ")";
+    ctx.lineWidth = 2; ctx.stroke();
+    ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, Math.PI * 2);
+    ctx.fillStyle = "#4ade9b"; ctx.fill();
+    ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, Math.PI * 2);
+    ctx.strokeStyle = "rgba(74,222,155,.9)"; ctx.lineWidth = 1.5; ctx.stroke();
+    ctx.beginPath(); ctx.arc(q.x, q.y, 2.2, 0, Math.PI * 2);
+    ctx.fillStyle = "#eafff3"; ctx.fill();
+  });
+  globe.rot += 0.0016;
+  requestAnimationFrame(drawGlobe);
+}
+
+/* ---------- Hourly chart ---------- */
+function drawChart(events) {
+  var cv = document.getElementById("chart");
+  if (!cv) return;
+  var ctx = cv.getContext("2d");
+  var W = cv.width, H = cv.height;
+  ctx.clearRect(0, 0, W, H);
+  var now = Date.now() / 1000;
+  var buckets = new Array(24).fill(0);
+  (events || []).forEach(function (e) {
+    var h = Math.floor((now - (e.ts || 0)) / 3600);
+    if (h >= 0 && h < 24) buckets[23 - h]++;
+  });
+  var max = Math.max.apply(null, buckets.concat([1]));
+  var padL = 8, padR = 8, padT = 14, padB = 22;
+  var bw = (W - padL - padR) / 24;
+  var peak = 0; buckets.forEach(function (v, i) { if (v > buckets[peak]) peak = i; });
+  buckets.forEach(function (v, i) {
+    var x = padL + i * bw + bw * 0.18;
+    var w = bw * 0.64;
+    var hgt = Math.max(v > 0 ? 4 : 0, (H - padT - padB) * (v / max));
+    var y = H - padB - hgt;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, hgt, [5, 5, 0, 0]);
+    ctx.fillStyle = i === peak ? "#ffd166" : (v > 0 ? "#4da3ff" : "#1e3255");
+    ctx.fill();
+    if (v > 0) {
+      ctx.fillStyle = "#c3d0e4"; ctx.font = "600 11px Inter, sans-serif"; ctx.textAlign = "center";
+      ctx.fillText(String(v), x + w / 2, y - 4);
+    }
+  });
+  var start = new Date((now - 24 * 3600) * 1000);
+  document.getElementById("chartStart").textContent = "24h ago · " + start.toLocaleTimeString([], { hour: "numeric" });
+  document.getElementById("chartPeak").textContent = buckets[peak] > 0 ? ("Busiest hour: " + buckets[peak] + " visit" + (buckets[peak] === 1 ? "" : "s")) : "No visits in the last 24 hours";
+}
+
+/* ---------- Data ---------- */
+function renderBarRows(tbody, rows, max, cls) {
+  var el = document.getElementById(tbody);
+  if (!rows.length) { el.innerHTML = "<tr><td colspan='2' class='muted'>No visits yet.</td></tr>"; return; }
+  el.innerHTML = rows.map(function (kv) {
+    var pct = max > 0 ? Math.round((kv[1] / max) * 100) : 0;
+    return "<tr class='bar-row " + (cls || "") + "'><td><span class='fill' style='width:" + pct + "%'></span>" + esc(kv[0]) + "</td><td>" + kv[1] + "</td></tr>";
+  }).join("");
+}
+
+function renderLive(j) {
+  setConn(true);
+  lastData = j;
+  document.getElementById("onlineNow").textContent = j.online_now;
+  document.getElementById("total24").textContent = j.total_24h;
+  document.getElementById("bots24").textContent = j.bots_24h;
+
+  var now = j.now || Math.floor(Date.now() / 1000);
+  var recent = j.recent || [];
+  var last6 = 0, prev6 = 0;
+  recent.forEach(function (e) {
+    var age = now - (e.ts || 0);
+    if (age < 6 * 3600) last6++;
+    else if (age < 12 * 3600) prev6++;
+  });
+  var tr = document.getElementById("trend24");
+  if (prev6 === 0 && last6 > 0) { tr.textContent = "▲ growing in the last 6 hours"; tr.className = "trend up"; }
+  else if (prev6 > 0) {
+    var pct = Math.round(((last6 - prev6) / prev6) * 100);
+    if (pct > 0) { tr.textContent = "▲ " + pct + "% vs the 6 hours before"; tr.className = "trend up"; }
+    else if (pct < 0) { tr.textContent = "▼ " + Math.abs(pct) + "% vs the 6 hours before"; tr.className = "trend down"; }
+    else { tr.textContent = "— steady vs the 6 hours before"; tr.className = "trend flat"; }
+  } else { tr.textContent = ""; }
+
+  var pages = topRows(j.by_page, 8);
+  if (pages.length) {
+    document.getElementById("topPageCount").textContent = pages[0][1];
+    document.getElementById("topPageName").textContent = prettyPage(pages[0][0]);
+  } else {
+    document.getElementById("topPageCount").textContent = "–";
+    document.getElementById("topPageName").textContent = "Top page";
+  }
+  var maxPage = pages.length ? pages[0][1] : 0;
+  renderBarRows("pagesBody", pages.map(function (kv) { return [prettyPage(kv[0]), kv[1]]; }), maxPage, "blue");
+  var srcs = topRows(j.by_source, 8);
+  var maxSrc = srcs.length ? srcs[0][1] : 0;
+  renderBarRows("srcBody", srcs.map(function (kv) { return [prettySource(kv[0]), kv[1]]; }), maxSrc, "amber");
+
+  var dev = j.by_device || {};
+  var total = (dev.desktop || 0) + (dev.mobile || 0) + (dev.tablet || 0);
+  var seg = document.getElementById("devSeg");
+  var leg = document.getElementById("devLegend");
+  if (total > 0) {
+    var parts = [
+      ["Mobile", dev.mobile || 0, "#4da3ff"],
+      ["Computer", dev.desktop || 0, "#ffd166"],
+      ["Tablet", dev.tablet || 0, "#4ade9b"]
+    ].filter(function (p) { return p[1] > 0; });
+    seg.innerHTML = parts.map(function (p) { return "<span style='width:" + (p[1] / total * 100) + "%;background:" + p[2] + ";'></span>"; }).join("");
+    leg.innerHTML = parts.map(function (p) { return "<span><i style='background:" + p[2] + ";'></i>" + p[0] + " · " + p[1] + " (" + Math.round(p[1] / total * 100) + "%)</span>"; }).join("");
+  } else {
+    seg.innerHTML = "<span style='width:100%;background:var(--blue-soft);'></span>";
+    leg.innerHTML = "<span class='muted'>No visits yet.</span>";
+  }
+
+  var bots = {};
+  (j.bots || []).forEach(function (e) {
+    var k = (e.vendor || e.bot || "Bot") + (e.bot && e.vendor ? " · " + e.bot : "");
+    bots[k] = (bots[k] || 0) + 1;
+  });
+  var botRows = topRows(bots, 8);
+  var botEl = document.getElementById("botBody");
+  botEl.innerHTML = botRows.length ? botRows.map(function (kv) {
+    return "<tr><td>" + esc(kv[0]) + " <span class='pill green'>AI</span></td><td>" + kv[1] + "</td></tr>";
+  }).join("") : "<tr><td colspan='2' class='muted'>No AI visitors in the last 24 hours.</td></tr>";
+
+  var online = j.online || [];
+  var dots = [];
+  online.forEach(function (e, i) {
+    var ll = tzLatLng(e.where || "");
+    if (ll) dots.push({ lat: ll[0], lng: ll[1], phase: (i * 0.37) % 1 });
+  });
+  globe.dots = dots;
+  pingNewVisitors(online);
+  document.getElementById("globeCount").textContent = online.length + (online.length === 1 ? " live" : " live");
+  var liveList = document.getElementById("liveList");
+  if (online.length) {
+    liveList.innerHTML = online.slice(0, 6).map(function (e) {
+      var pill = e.kind === "bot" ? " <span class='pill green'>AI</span>" : "";
+      return "<li><span class='mdot'></span><span class='where'>" + esc(prettyWhere(e.where || "")) + pill + "</span><span class='page'>" + esc(prettyPage(e.page || "/")) + "</span></li>";
+    }).join("");
+  } else {
+    liveList.innerHTML = "<li><span class='empty'>No one on the site at this moment.</span></li>";
+  }
+  var wheres = topRows(j.by_where, 6);
+  var whereList = document.getElementById("whereList");
+  if (wheres.length) {
+    whereList.innerHTML = wheres.map(function (kv) {
+      return "<li><span class='mdot' style='background:var(--blue);box-shadow:0 0 0 4px var(--blue-soft);'></span><span class='where'>" + esc(prettyWhere(kv[0])) + "</span><span class='page'>" + kv[1] + " visit" + (kv[1] === 1 ? "" : "s") + "</span></li>";
+    }).join("");
+  } else {
+    whereList.innerHTML = "<li><span class='empty'>No visits yet today.</span></li>";
+  }
+
+  var rec = (j.recent || []).slice(0, 10);
+  document.getElementById("recentList").innerHTML = rec.length ? rec.map(function (e) {
+    var label = (e.kind === "bot" ? (e.vendor || "Bot") + " · AI" : "Visitor");
+    var pill = e.kind === "bot" ? " <span class='pill green'>AI</span>" : "";
+    return "<li><span>" + esc(label) + pill + " — " + esc(prettyPage(e.page || "/")) + "</span><span>" + fmtTime(e.ts) + "</span></li>";
+  }).join("") : "<li><span class='muted'>No visits yet.</span></li>";
+
+  drawChart(recent);
+  document.getElementById("refreshNote").textContent = "Last updated " + new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) + " — updates every 30 seconds.";
+}
+
+async function loadLive() {
+  try {
+    var r = await fetch(API + "/live?key=" + encodeURIComponent(readKey) + "&site=knorth");
+    var j = await r.json();
+    if (j.error) {
+      localStorage.removeItem("kn_read_key");
+      readKey = "";
+      if (timer) clearInterval(timer);
+      show("dash", false);
+      show("lock", true);
+      document.getElementById("keyErr").textContent = "Your key needs to be entered again.";
+      setConn(false);
+      return;
+    }
+    renderLive(j);
+  } catch (e) {
+    setConn(false);
+    document.getElementById("refreshNote").textContent = "Could not refresh just now — will try again shortly.";
+  }
+}
+
+/* On load: if a key is saved, go straight to the dashboard. */
+if (readKey) {
+  show("lock", false);
+  show("dash", true);
+  loadLive();
+  timer = setInterval(loadLive, 30000);
+  requestAnimationFrame(drawGlobe);
+}
+</script>
+</body>
+</html>
