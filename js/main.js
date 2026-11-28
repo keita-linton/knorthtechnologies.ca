@@ -644,3 +644,39 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
   else init();
 })();
+/* --- K North Technologies live-traffic beacon ---
+   Add this to every page of knorthtechnologies.ca (just before </body>,
+   or in the shared footer / main.js). Reports an anonymous pageview + a
+   heartbeat every 30 s while the tab is open, so the traffic dashboard
+   can show who is on the site right now.
+   No cookies, no personal data, no IP stored.
+   Uses the SHARED collector (abundant-traffic) so there is no extra
+   hosting cost — Knorth events are tagged site=knorth. */
+(function(){
+  var EP = "https://abundant-traffic.fly.dev/hit";
+  var KEY = "258kL7yo5KeaBz4N5RHLxwcxFvlaNCY3";
+  function payload(){
+    var tz = "";
+    try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch(e){}
+    return JSON.stringify({
+      key: KEY,
+      site: "knorth",
+      page: location.pathname,
+      referrer: document.referrer || "",
+      ua: navigator.userAgent || "",
+      screen: (screen.width || 0) + "x" + (screen.height || 0),
+      tz: tz
+    });
+  }
+  function send(){
+    try {
+      if (navigator.sendBeacon) { navigator.sendBeacon(EP, payload()); return; }
+    } catch(e){}
+    try {
+      fetch(EP, {method:"POST", headers:{"Content-Type":"application/json"}, body: payload(), keepalive:true}).catch(function(){});
+    } catch(e){}
+  }
+  send();
+  setInterval(function(){ if (!document.hidden) send(); }, 30000);
+  document.addEventListener("visibilitychange", function(){ if (!document.hidden) send(); });
+})();
